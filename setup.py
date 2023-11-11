@@ -1,4 +1,4 @@
-"""Creates a desktop shortcut that can run Auto Maple from anywhere."""
+"""Creates a desktop shortcut that can run Auto Maple v2 from anywhere."""
 
 import os
 import sys
@@ -21,7 +21,7 @@ def run_as_admin():
             None,
             1
         )
-        print(' ~  Finished setting up Auto Maple')
+        print(' ~  Finished setting up Auto Maple v2')
     exit(0)
 
 
@@ -37,11 +37,11 @@ def create_desktop_shortcut():
         print(" -  Leaving command prompt open after program finishes")
 
     shell = client.Dispatch('WScript.Shell')
-    shortcut_path = os.path.join(shell.SpecialFolders('Desktop'), 'Auto Maple.lnk')
+    shortcut_path = os.path.join(shell.SpecialFolders('Desktop'), 'Auto Maple v2.lnk')
     shortcut = shell.CreateShortCut(shortcut_path)
     shortcut.Targetpath = target
     shortcut.Arguments = flag + f' \"cd {cwd} & python main.py\"'
-    shortcut.IconLocation = os.path.join(cwd, 'assets', 'icon.ico')
+    shortcut.IconLocation = os.path.join(cwd, 'assets', 'icon_1.ico')
     try:
         shortcut.save()
     except:

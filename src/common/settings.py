@@ -69,6 +69,7 @@ def validate_horizontal_arrows(key):
 SETTING_VALIDATORS = {
     'move_tolerance': float,
     'adjust_tolerance': float,
+    'auto_change_channel':validate_boolean,
     'record_layout': validate_boolean,
     'buff_cooldown': validate_nonnegative_int
 }

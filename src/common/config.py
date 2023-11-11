@@ -43,3 +43,6 @@ listener = None
 
 # Shares the gui to all modules
 gui = None
+
+# The player's current channel
+curr_channel = 0

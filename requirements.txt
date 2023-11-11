@@ -6,4 +6,4 @@ opencv-python-headless
 Pillow
 pygame
 pywin32
-tensorflow
+tensorflow<2.11

@@ -2,6 +2,7 @@ from ctypes import *
 import threading
 import time
 import random, decimal
+import os
 
 DD_CODE = {
     'left': 710,   # Arrow keys
@@ -91,7 +92,7 @@ DD_CODE = {
     "'": 411
 }
 
-DD_DLL = windll.LoadLibrary('C:\\Users\\Garson\\Desktop\\auto-maple\\driver\\dd.32695\\dd32695.x64.dll')
+DD_DLL = windll.LoadLibrary(f'{os.getcwd()}\\driver\\dd.32695\\dd32695.x64.dll')
 st = DD_DLL.DD_btn(0) #DD Initialize
 if st==1:
     print("OK Driver Loaded")
@@ -132,14 +133,18 @@ class DriverKey():
         self.key_up_queue.append(key)
 
     def _key_down(self, key):
-        self.driver.DD_key(DD_CODE[key], 1) #1=down
-        down_time = decimal.Decimal(random.random() / random.randint(1, 2))
-        time.sleep(down_time);
-        print(f"Down '{key}'")
+        if key not in DD_CODE.keys():
+            print(f"Invalid keyboard input: '{key}'.")
+        else:
+            self.driver.DD_key(DD_CODE[key], 1) #1=down
+            down_time = decimal.Decimal(random.random() / random.randint(1, 2))
+            time.sleep(down_time);
 
     def _key_up(self, key): 
-        self.driver.DD_key(DD_CODE[key], 2) #2=up
-        print(f"Up '{key}'")
+        if key not in DD_CODE.keys():
+            print(f"Invalid keyboard input: '{key}'.")
+        else:
+            self.driver.DD_key(DD_CODE[key], 2) #2=up
     
     #1==L.down, 2==L.up, 4==R.down, 8==R.up, 16==M.down, 32==M.up
 
@@ -166,11 +171,3 @@ class DriverKey():
 
     def _move_to(self,x, y):
         self.driver.DD_mov(x, y);
-
-d_key = DriverKey();
-d_key2 = DriverKey();
-d_key._key_down('a');
-d_key._key_up('a');
-
-d_key._key_down('v');
-d_key._key_up('v');

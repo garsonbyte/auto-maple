@@ -41,7 +41,7 @@ def create_desktop_shortcut():
     shortcut = shell.CreateShortCut(shortcut_path)
     shortcut.Targetpath = target
     shortcut.Arguments = flag + f' \"cd {cwd} & python main.py\"'
-    shortcut.IconLocation = os.path.join(cwd, 'assets', 'icon_1.ico')
+    shortcut.IconLocation = os.path.join(cwd, 'assets', 'ico.ico')
     try:
         shortcut.save()
     except:

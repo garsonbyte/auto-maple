@@ -1,5 +1,5 @@
 import tkinter as tk
-from src.gui.interfaces import LabelFrame
+from src.gui.interfaces import *
 from src.common import config
 
 
@@ -8,13 +8,13 @@ class Details(LabelFrame):
         super().__init__(parent, 'Details', **kwargs)
         self.name_var = tk.StringVar()
 
-        self.name = tk.Entry(self, textvariable=self.name_var, justify=tk.CENTER, state=tk.DISABLED)
+        self.name = Entry(self, textvariable=self.name_var, justify=tk.CENTER, state=tk.DISABLED)
         self.name.pack(pady=(5, 2))
 
-        self.scroll = tk.Scrollbar(self)
+        self.scroll = Scrollbar(self)
         self.scroll.pack(side=tk.RIGHT, fill=tk.Y, pady=5)
 
-        self.text = tk.Text(self, width=1, height=10,
+        self.text = Text(self, width=1, height=10,
                             yscrollcommand=self.scroll.set,
                             state=tk.DISABLED, wrap=tk.WORD)
         self.text.pack(side=tk.LEFT, expand=True, fill='both', padx=(5, 0), pady=(0, 5))

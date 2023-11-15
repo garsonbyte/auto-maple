@@ -183,19 +183,22 @@ class Setting(Component):
 
     id = '$'
 
-    def __init__(self, target, value):
+    def __init__(self, target):
         super().__init__(locals())
         self.key = str(target)
         if self.key not in settings.SETTING_VALIDATORS:
             raise ValueError(f"Setting '{target}' does not exist")
-        self.value = settings.SETTING_VALIDATORS[self.key](value)
 
-    def main(self):
-        setattr(settings, self.key, self.value)
+        self.value = getattr(settings, self.key)
 
     def __str__(self):
-        return f'  $ {self.key} = {self.value}'
+        return f'{self.value}'
 
+    def get(self):
+        return self.value
+    
+    def set(self, value):
+        setattr(settings, self.key, value)
 
 SYMBOLS = {
     '*': Point,
@@ -366,3 +369,14 @@ class Buff(Command):
     def main(self):
         print("\n[!] 'Buff' command not implemented in current command book, aborting process.")
         config.enabled = False
+
+
+class ChangeChannel(Command):
+    """ go to target channel """
+    _display_name = 'change channel'
+    # skill_cool_down = 0
+
+    def __init__(self, target_channel='', max_rand='20', delay='5'):
+        super().__init__(locals())
+        self.delay = float(delay)
+        self.max_rand = int(max_rand)

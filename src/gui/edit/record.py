@@ -1,6 +1,6 @@
 import tkinter as tk
 from src.routine.components import Point
-from src.gui.interfaces import LabelFrame
+from src.gui.interfaces import *
 
 
 class Record(LabelFrame):
@@ -12,10 +12,10 @@ class Record(LabelFrame):
         self.entries = []
         self.display_var = tk.StringVar()
 
-        self.scroll = tk.Scrollbar(self)
+        self.scroll = Scrollbar(self)
         self.scroll.pack(side=tk.RIGHT, fill='y', pady=5)
 
-        self.listbox = tk.Listbox(self, width=25,
+        self.listbox = Listbox(self, width=25,
                                   listvariable=self.display_var,
                                   exportselection=False,
                                   activestyle='none',

@@ -1,24 +1,28 @@
 import git
 import tkinter as tk
 from src.common import config
-from src.gui.interfaces import MenuBarItem, LabelFrame, Frame
+from src.gui.interfaces import *
 from tkinter.messagebox import askyesno
 
 
 class Update(MenuBarItem):
     def __init__(self, parent, **kwargs):
         super().__init__(parent, 'Update', **kwargs)
+        self.image = tk.PhotoImage(file='assets/icon.png')
 
         for path in config.bot.submodules:
             name = path.capitalize()
             self.add_command(
+                activebackground = 'gray30',
+                compound='left',
+                image=self.image,
                 label=name,
                 command=lambda: UpdatePrompt(self, name, path)
             )
 
 
 class UpdatePrompt(tk.Toplevel):
-    RESOLUTION = '500x400'
+    RESOLUTION = '450x375'
 
     def __init__(self, parent, name, path, **kwargs):
         super().__init__(parent, **kwargs)
@@ -31,7 +35,7 @@ class UpdatePrompt(tk.Toplevel):
         self.iconphoto(False, icon)
         self.geometry(UpdatePrompt.RESOLUTION)
         self.resizable(False, False)
-
+        self.config(background='gray25')
         self.columnconfigure(0, weight=1)
         self.columnconfigure(3, weight=1)
         self.list_var = tk.StringVar(value=[])
@@ -40,9 +44,9 @@ class UpdatePrompt(tk.Toplevel):
         # Display local changes
         display_frame = LabelFrame(self, 'Local Changes')
         display_frame.grid(row=0, column=1, sticky=tk.NSEW, padx=(10, 0), pady=10)
-        self.scroll = tk.Scrollbar(display_frame)
+        self.scroll = Scrollbar(display_frame)
         self.scroll.pack(side=tk.RIGHT, fill='both', pady=5)
-        self.listbox = tk.Listbox(display_frame,
+        self.listbox = Listbox(display_frame,
                                   width=40,
                                   height=15,
                                   listvariable=self.list_var,
@@ -54,15 +58,15 @@ class UpdatePrompt(tk.Toplevel):
         # Controls
         controls_frame = Frame(self)
         controls_frame.grid(row=0, column=2, sticky=tk.NSEW, padx=10, pady=10)
-        self.refresh = tk.Button(controls_frame, text='Refresh', command=self._refresh_display)
+        self.refresh = Button(controls_frame, text='Refresh', command=self._refresh_display)
         self.refresh.pack(side=tk.TOP, pady=(10, 5))
-        self.soft_update = tk.Button(
+        self.soft_update = Button(
             controls_frame,
             text='Update',
             command=self._update
         )
         self.soft_update.pack(side=tk.BOTTOM)
-        self.force_update = tk.Button(
+        self.force_update = Button(
             controls_frame,
             text='Rebuild',
             command=lambda: self._update(force=True)

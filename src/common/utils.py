@@ -9,6 +9,9 @@ from src.common import config, settings
 from random import random
 
 
+def no_op():
+    pass
+
 def run_if_enabled(function):
     """
     Decorator for functions that should only run if the bot is enabled.

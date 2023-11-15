@@ -1,16 +1,15 @@
 import tkinter as tk
-from src.gui.interfaces import LabelFrame
+from tkinter import ttk
+from src.gui.interfaces import *
 from src.common import config
 
 
 class Routine(LabelFrame):
     def __init__(self, parent, **kwargs):
         super().__init__(parent, 'Routine', **kwargs)
+        self.scroll = Scrollbar(self)
 
-        self.scroll = tk.Scrollbar(self)
-        self.scroll.pack(side=tk.RIGHT, fill='both', pady=5)
-
-        self.listbox = tk.Listbox(self, width=25,
+        self.listbox = Listbox(self, width=25,
                                   listvariable=config.gui.routine_var,
                                   exportselection=False,
                                   activestyle='none',
@@ -23,6 +22,7 @@ class Routine(LabelFrame):
         self.listbox.pack(side=tk.LEFT, expand=True, fill='both', padx=(5, 0), pady=5)
 
         self.scroll.config(command=self.listbox.yview)
+        self.scroll.pack(side=tk.RIGHT, fill='both', pady=5)
 
     def select(self, i):
         self.listbox.selection_clear(0, 'end')

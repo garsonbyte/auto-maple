@@ -2,20 +2,20 @@ import tkinter as tk
 
 from src.common import config
 from src.routine.components import Point
-from src.gui.interfaces import Frame
+from src.gui.interfaces import *
 
 
 class Commands(Frame):
     def __init__(self, parent, **kwargs):
         super().__init__(parent, **kwargs)
 
-        self.label = tk.Label(self, text='Commands')
+        self.label = Label(self, text='Commands')
         self.label.pack(fill='x', padx=5)
 
-        self.scroll = tk.Scrollbar(self)
+        self.scroll = Scrollbar(self)
         self.scroll.pack(side=tk.RIGHT, fill='y', pady=(0, 5))
 
-        self.listbox = tk.Listbox(self, width=25,
+        self.listbox = Listbox(self, width=25,
                                   listvariable=parent.parent.commands_var,
                                   exportselection=False,
                                   activestyle='none',

@@ -8,7 +8,7 @@ from src.gui.edit.minimap import Minimap
 from src.gui.edit.record import Record
 from src.gui.edit.routine import Routine
 from src.gui.edit.status import Status
-from src.gui.interfaces import Tab, Frame, LabelFrame
+from src.gui.interfaces import *
 
 
 class Edit(Tab):
@@ -56,7 +56,7 @@ class Editor(LabelFrame):
         self.contents = Frame(self)
         self.contents.grid(row=0, column=0, sticky=tk.EW, padx=5)
 
-        title = tk.Entry(self.contents, justify=tk.CENTER)
+        title = Entry(self.contents, justify=tk.CENTER)
         title.pack(expand=True, fill='x', pady=(5, 2))
         title.insert(0, 'Nothing selected')
         title.config(state=tk.DISABLED)
@@ -67,11 +67,11 @@ class Editor(LabelFrame):
         row = Frame(self.contents, highlightthickness=0)
         row.pack(expand=True, fill='x')
 
-        label = tk.Entry(row)
+        label = Entry(row)
         label.pack(side=tk.LEFT, expand=True, fill='x')
         label.config(state=tk.DISABLED)
 
-        entry = tk.Entry(row)
+        entry = Entry(row)
         entry.pack(side=tk.RIGHT, expand=True, fill='x')
         entry.config(state=tk.DISABLED)
 
@@ -86,12 +86,12 @@ class Editor(LabelFrame):
         row = Frame(self.contents, highlightthickness=0)
         row.pack(expand=True, fill='x')
 
-        label = tk.Entry(row)
+        label = Entry(row)
         label.pack(side=tk.LEFT, expand=True, fill='x')
         label.insert(0, key)
         label.config(state=tk.DISABLED)
 
-        entry = tk.Entry(row, textvariable=self.vars[key])
+        entry = Entry(row, textvariable=self.vars[key])
         entry.pack(side=tk.RIGHT, expand=True, fill='x')
 
     def create_edit_ui(self, arr, i, func):
@@ -108,7 +108,7 @@ class Editor(LabelFrame):
         self.contents = Frame(self)
         self.contents.grid(row=0, column=0, sticky=tk.EW, padx=5)
 
-        title = tk.Entry(self.contents, justify=tk.CENTER)
+        title = Entry(self.contents, justify=tk.CENTER)
         title.pack(expand=True, fill='x', pady=(5, 2))
         title.insert(0, f"Editing {arr[i].__class__.__name__}")
         title.config(state=tk.DISABLED)
@@ -116,7 +116,7 @@ class Editor(LabelFrame):
         if len(arr[i].kwargs) > 0:
             for key, value in arr[i].kwargs.items():
                 self.create_entry(key, value)
-            button = tk.Button(self.contents, text='Save', command=func(arr, i, self.vars))
+            button = Button(self.contents, text='Save', command=func(arr, i, self.vars))
             button.pack(pady=5)
         else:
             self.create_disabled_entry()
@@ -129,7 +129,7 @@ class Editor(LabelFrame):
         self.contents = Frame(self)
         self.contents.grid(row=0, column=0, sticky=tk.EW, padx=5)
 
-        title = tk.Entry(self.contents, justify=tk.CENTER)
+        title = Entry(self.contents, justify=tk.CENTER)
         title.pack(expand=True, fill='x', pady=(5, 2))
         title.insert(0, f"Creating new ...")
         title.config(state=tk.DISABLED)
@@ -174,7 +174,7 @@ class Editor(LabelFrame):
 
         # Search bar
         input_var = tk.StringVar()
-        user_input = tk.Entry(self.contents, textvariable=input_var)
+        user_input = Entry(self.contents, textvariable=input_var)
         user_input.pack(expand=True, fill='x')
         user_input.insert(0, 'Search for a component')
         user_input.bind('<FocusIn>', lambda _: user_input.selection_range(0, 'end'))
@@ -187,10 +187,10 @@ class Editor(LabelFrame):
         results = Frame(self.contents)
         results.pack(expand=True, fill='both', pady=(1, 0))
 
-        scroll = tk.Scrollbar(results)
+        scroll = Scrollbar(results)
         scroll.pack(side=tk.RIGHT, fill='both')
 
-        display = tk.Listbox(results, listvariable=var,
+        display = Listbox(results, listvariable=var,
                              activestyle='none',
                              yscrollcommand=scroll.set)
         display.bind('<Double-1>', on_display_submit)
@@ -221,7 +221,7 @@ class Editor(LabelFrame):
         self.contents = Frame(self)
         self.contents.grid(row=0, column=0, sticky=tk.EW, padx=5)
 
-        title = tk.Entry(self.contents, justify=tk.CENTER)
+        title = Entry(self.contents, justify=tk.CENTER)
         title.pack(expand=True, fill='x', pady=(5, 2))
         title.insert(0, f"Creating new {component.__name__}")
         title.config(state=tk.DISABLED)
@@ -253,10 +253,10 @@ class Editor(LabelFrame):
         controls = Frame(self.contents)
         controls.pack(expand=True, fill='x')
 
-        add_button = tk.Button(controls, text='Add', command=self.add(component))
+        add_button = Button(controls, text='Add', command=self.add(component))
         if sticky:          # Only create 'cancel' button if stickied
             add_button.pack(side=tk.RIGHT, pady=5)
-            cancel_button = tk.Button(controls, text='Cancel', command=self.cancel, takefocus=False)
+            cancel_button = Button(controls, text='Cancel', command=self.cancel, takefocus=False)
             cancel_button.pack(side=tk.LEFT, pady=5)
         else:
             add_button.pack(pady=5)

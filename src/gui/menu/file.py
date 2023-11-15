@@ -9,30 +9,63 @@ from tkinter.messagebox import askyesno
 class File(MenuBarItem):
     def __init__(self, parent, **kwargs):
         super().__init__(parent, 'File', **kwargs)
-        # parent.add_cascade(label='File', menu=self)
-
         self.add_command(
+            activebackground = 'gray24',
+            activeforeground = 'white',
             label='New Routine',
-            command=utils.async_callback(self, File._new_routine),
-            state=tk.DISABLED
         )
         self.add_command(
+            activebackground = 'gray24',
+            activeforeground = 'white',
             label='Save Routine',
-            command=utils.async_callback(self, File._save_routine),
-            state=tk.DISABLED
         )
         self.add_separator()
-        self.add_command(label='Load Command Book', command=utils.async_callback(self, File._load_commands))
+
+        self.image = tk.PhotoImage(file='assets/icon.png')
+
         self.add_command(
+            activebackground = 'gray30',
+            compound='left',
+            image=self.image,
+            label='Load Command Book', 
+            command=utils.async_callback(self, File._load_commands),
+        )
+        self.add_command(
+            activebackground = 'gray24',
+            activeforeground = 'white',
             label='Load Routine',
-            command=utils.async_callback(self, File._load_routine),
-            state=tk.DISABLED
         )
 
     def enable_routine_state(self):
-        self.entryconfig('New Routine', state=tk.NORMAL)
-        self.entryconfig('Save Routine', state=tk.NORMAL)
-        self.entryconfig('Load Routine', state=tk.NORMAL)
+        self.entryconfig(
+            'New Routine',
+            compound='left',
+            image=self.image,
+            command=utils.async_callback(self, File._new_routine), 
+            activebackground = 'gray30',
+            activeforeground = 'pale turquoise',
+            state=tk.ACTIVE
+        )
+        
+        self.entryconfig(
+            'Save Routine',
+            compound='left',
+            image=self.image,
+            command=utils.async_callback(self, File._save_routine), 
+            activebackground = 'gray30',
+            activeforeground = 'pale turquoise',
+            state=tk.ACTIVE
+        )
+
+        self.entryconfig(
+            'Load Routine',
+            compound='left',
+            image=self.image,
+            command=utils.async_callback(self, File._load_routine), 
+            activebackground = 'gray30',
+            activeforeground = 'pale turquoise',
+            state=tk.ACTIVE
+        )
 
     @staticmethod
     @utils.run_if_disabled('\n[!] Cannot create a new routine while Auto Maple is enabled')

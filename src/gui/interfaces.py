@@ -4,14 +4,21 @@ import tkinter as tk
 import keyboard as kb
 from tkinter import ttk
 from src.common import utils
+from src.gui.interfaces import *
 from src.common.interfaces import Configurable
 
 
 class Frame(tk.Frame):
     def __init__(self, parent, **kwargs):
         super().__init__(parent, **kwargs)
+        self.config(bg='gray21')
         self.parent = parent
 
+class Label(tk.Label):
+    def __init__(self, parent, **kwargs):
+        super().__init__(parent, **kwargs)
+        self.config(background='gray21', foreground='misty rose')
+        self.parent = parent
 
 class LabelFrame(ttk.LabelFrame):
     def __init__(self, parent, name, **kwargs):
@@ -19,18 +26,77 @@ class LabelFrame(ttk.LabelFrame):
         kwargs['labelanchor'] = tk.N
         super().__init__(parent, **kwargs)
         self.parent = parent
+        self.config(border=3)
+        style = ttk.Style()
+        style.theme_use('default')
 
+        # Labelframe Style
+        style.configure('TLabelframe', background='gray21')
+        style.configure('TLabelframe.Label', background='gray21', foreground='pale turquoise')
 
 class Tab(Frame):
     def __init__(self, parent, name, **kwargs):
         super().__init__(parent, **kwargs)
+        self.config(background='gray24')
         parent.add(self, text=name)
 
 
 class MenuBarItem(tk.Menu):
     def __init__(self, parent, label, **kwargs):
         super().__init__(parent, **kwargs)
+        self.config(background='gray24', activeforeground='pale turquoise', foreground='white')
         parent.add_cascade(label=label, menu=self)
+
+class Checkbutton(tk.Checkbutton):
+    def __init__(self, parent, **kwargs):
+        super().__init__(parent, **kwargs)
+        self.config(bg='gray21', fg='misty rose', activebackground='gray21')
+        self.parent = parent
+
+    def on_check(self, checked, event = utils.no_op):
+        if (checked.get()): # checked
+            self.config(foreground='lime green')
+        elif (not checked.get()):
+            self.config(foreground='misty rose')
+
+        event()
+
+class Radiobutton(tk.Radiobutton):
+    def __init__(self, parent, **kwargs):
+        super().__init__(parent, **kwargs)
+        self.config(background='gray25', foreground='pale turquoise', activeforeground='green', activebackground='gray35', indicatoron=0, selectcolor='gray35')
+        self.parent = parent
+
+class Listbox(tk.Listbox):
+    def __init__(self, parent, **kwargs):
+        super().__init__(parent, **kwargs)
+        self.config(background='gray28', foreground='light goldenrod', highlightbackground='gray30')
+        self.parent = parent
+
+class Scrollbar(ttk.Scrollbar):
+    def __init__(self, parent, **kwargs):
+        super().__init__(parent, **kwargs)
+        self.parent = parent
+        style = ttk.Style()
+        style.configure("TScrollbar", troughcolor='gray40')
+    
+class Text(tk.Text):
+    def __init__(self, parent, **kwargs):
+        super().__init__(parent, **kwargs)
+        self.parent = parent
+        self.config(background='gray30', borderwidth=2, foreground='pale turquoise')
+
+class Entry(tk.Entry):
+    def __init__(self, parent, **kwargs):
+        super().__init__(parent, **kwargs)
+        self.parent = parent
+        self.config(disabledbackground='gray40', disabledforeground='light steel blue', background='gray80', foreground='midnight blue')
+
+class Button(tk.Button):
+    def __init__(self, parent, **kwargs):
+        super().__init__(parent, **kwargs)
+        self.config(background='gray28', foreground='pale turquoise', activeforeground='green', activebackground='gray35')
+        self.parent = parent
 
 
 class KeyBindings(LabelFrame):
@@ -74,7 +140,8 @@ class KeyBindings(LabelFrame):
             self.container.pack(side=tk.TOP, fill=tk.BOTH, expand=True, padx=(5, 0))
             self.container.pack_propagate(False)
             self.canvas = tk.Canvas(self.container, bd=0, highlightthickness=0)
-            self.scrollbar = tk.Scrollbar(self.container, command=self.canvas.yview)
+            self.canvas.config(insertbackground='gray50')
+            self.scrollbar = Scrollbar(self.container, command=self.canvas.yview)
             self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
             self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
             self.contents = Frame(self.canvas)
@@ -94,9 +161,10 @@ class KeyBindings(LabelFrame):
             self.create_entry(action, key)
         self.focus()
 
-        self.reset = tk.Button(self, text='Reset', command=self.refresh_edit_ui, takefocus=False)
+        self.reset = Button(self, text='Reset', command=self.refresh_edit_ui, takefocus=False)
+        self.reset.config(foreground='salmon')
         self.reset.pack(side=tk.LEFT, padx=5, pady=5)
-        self.save = tk.Button(self, text='Save', command=self.save_keybindings, takefocus=False)
+        self.save = Button(self, text='Save', command=self.save_keybindings, takefocus=False)
         self.save.pack(side=tk.RIGHT, padx=5, pady=5)
 
     def refresh_edit_ui(self):
@@ -143,7 +211,7 @@ class KeyBindings(LabelFrame):
         row = Frame(self.contents, highlightthickness=0)
         row.pack(expand=True, fill='x')
 
-        label = tk.Entry(row)
+        label = Entry(row)
         label.grid(row=0, column=0, sticky=tk.EW)
         label.insert(0, action)
         label.config(state=tk.DISABLED)
@@ -173,7 +241,7 @@ class KeyBindings(LabelFrame):
             return False
 
         reg = (self.register(validate), '%d')
-        entry = tk.Entry(row, textvariable=display_var,
+        entry = Entry(row, textvariable=display_var,
                          validate='key', validatecommand=reg,
                          takefocus=False)
         entry.bind('<KeyPress>', on_key_press)
@@ -183,10 +251,10 @@ class KeyBindings(LabelFrame):
         row = Frame(self.contents, highlightthickness=0)
         row.pack(expand=True, fill='x')
 
-        label = tk.Entry(row)
+        label = Entry(row)
         label.grid(row=0, column=0, sticky=tk.EW)
         label.config(state=tk.DISABLED)
 
-        entry = tk.Entry(row)
+        entry = Entry(row)
         entry.grid(row=0, column=1, sticky=tk.EW)
         entry.config(state=tk.DISABLED)

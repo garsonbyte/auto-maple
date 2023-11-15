@@ -3,6 +3,8 @@
 import time
 import threading
 import tkinter as tk
+import pywinstyles
+import ctypes
 from tkinter import ttk
 from src.common import config, settings
 from src.gui import Menu, View, Edit, Settings
@@ -11,19 +13,25 @@ from src.gui import Menu, View, Edit, Settings
 class GUI:
     DISPLAY_FRAME_RATE = 30
     RESOLUTIONS = {
-        'DEFAULT': '800x800',
+        'DEFAULT': '780x860',
         'Edit': '1400x800'
     }
 
     def __init__(self):
         config.gui = self
-
         self.root = tk.Tk()
-        self.root.title('Auto Maple')
-        icon = tk.PhotoImage(file='assets/icon.png')
-        self.root.iconphoto(False, icon)
+
+        appId = 'automaple.v2'
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(appId)
+
+        self.root.title('Auto Maple v2')
+        self.root.iconbitmap('assets/ico.ico')
         self.root.geometry(GUI.RESOLUTIONS['DEFAULT'])
-        self.root.resizable(False, False)
+        self.root.resizable(True, True)
+        self.root.config(borderwidth=5)
+        self.root.config(background='gray10')
+        self.root.config(relief=tk.FLAT)
+        self.root.config(cursor='diamond_cross')
 
         # Initialize GUI variables
         self.routine_var = tk.StringVar()
@@ -31,6 +39,14 @@ class GUI:
         # Build the GUI
         self.menu = Menu(self.root)
         self.root.config(menu=self.menu)
+
+        style = ttk.Style()
+        style.theme_use("default")
+
+        # Notebook Style
+        style.configure('TNotebook', background='gray13')
+        style.configure('TNotebook.Tab', background='gray13', foreground='white')
+        style.map('TNotebook.Tab',background=[("selected",'#0d98ba')])
 
         self.navigation = ttk.Notebook(self.root)
 
@@ -40,6 +56,11 @@ class GUI:
 
         self.navigation.pack(expand=True, fill='both')
         self.navigation.bind('<<NotebookTabChanged>>', self._resize_window)
+
+        pywinstyles.change_header_color(self.root, color="#2f2c2c")  
+        pywinstyles.change_title_color(self.root, color="#AFEEEE") 
+        pywinstyles.change_border_color(self.root, color="#AFEEEE")
+
         self.root.focus()
 
     def set_routine(self, arr):
